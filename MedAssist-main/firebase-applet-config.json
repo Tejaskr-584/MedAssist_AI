@@ -1,10 +1,9 @@
 {
-  "projectId": "gen-lang-client-0141375731",
-  "appId": "1:49719362501:web:daa921872cbf6537c701ac",
-  "apiKey": "AIzaSyB1Kzo51fqCnKHIze1wx1oCVo_-gP3FtG4",
-  "authDomain": "gen-lang-client-0141375731.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-fa8975e5-663d-44d5-a1c1-d04de4bbb4c2",
-  "storageBucket": "gen-lang-client-0141375731.firebasestorage.app",
-  "messagingSenderId": "49719362501",
-  "measurementId": ""
+  "apiKey": "AIzaSyDz-OieKnTCBGHSSbOhJW6KWwj1Nwywdk8",
+  "authDomain": "medassist-ai-d1a5b.firebaseapp.com",
+  "projectId": "medassist-ai-d1a5b",
+  "storageBucket": "medassist-ai-d1a5b.firebasestorage.app",
+  "messagingSenderId": "836985020632",
+  "appId": "1:836985020632:web:e62055d212dc4ce032f7ad",
+  "measurementId": "G-C5QNSW5SCF"
 }
