@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/5d1b7d70-73bb-474c-9a7c-82f95d0cd90b
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
-=======
 # 🧠 MedAssist AI – Smart Healthcare Assistant
 
 🚀 **MedAssist AI** is an AI-powered healthcare assistant designed to provide early-stage symptom understanding and guidance through an intelligent conversational interface.
@@ -186,4 +164,4 @@ MedAssist AI:
 ## ⭐ Support
 
 If you like this project, consider giving it a ⭐
->>>>>>> d02acf233798df52917dea3d6834f5829927b17c
+
