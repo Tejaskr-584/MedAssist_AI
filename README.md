@@ -9,6 +9,17 @@ Many individuals delay seeking medical help due to lack of awareness, time const
 ## 💡 Solution
 MedAssist AI interacts with users, asks intelligent follow-up questions based on symptoms, and provides preliminary insights along with recommended next steps such as self-care or consulting a doctor.
 
+## ✨ Features
+- Symptom input
+- AI follow-up questions
+- Health insights
+- Preventive suggestions
+  
+## 🛠 Tech Stack
+- Frontend: (React / Next.js / etc.)
+- Backend: (Node.js / Firebase / etc.)
+- AI: Google Gemini API
+
 ## 🤖 AI Approach
 - Uses Large Language Models (Google Gemini)
 - Natural Language Processing for symptom understanding
