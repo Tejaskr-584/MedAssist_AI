@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+
+    function isValidChat(data) {
+      return data.userId is string &&
+             data.title is string &&
+             data.messages is list &&
+             data.createdAt is timestamp &&
+             data.updatedAt is timestamp &&
+             (data.lastAnalysis == null || data.lastAnalysis is map) &&
+             data.location is string &&
+             data.severity is string &&
+             data.language is string &&
+             data.isEmergency is bool;
+    }
+
+    function isValidRecord(data) {
+      return data.userId is string &&
+             data.title is string &&
+             data.title.size() > 0 &&
+             data.title.size() < 200 &&
+             data.content is string &&
+             data.content.size() > 0 &&
+             data.content.size() < 10000 &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidAppointment(data) {
+      return data.userId is string &&
+             data.doctorId is string &&
+             data.doctorName is string &&
+             data.doctorName.size() > 0 &&
+             data.doctorName.size() < 100 &&
+             data.date is string &&
+             data.time is string &&
+             data.status in ['confirmed', 'cancelled', 'completed'] &&
+             data.createdAt is timestamp;
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // Chats Collection
+    match /chats/{chatId} {
+      allow read: if isDocOwner();
+      allow create: if isAuthenticated() && 
+                      request.resource.data.userId == request.auth.uid &&
+                      isValidChat(request.resource.data);
+      allow update: if isDocOwner() && 
+                      request.resource.data.userId == resource.data.userId &&
+                      isValidChat(request.resource.data);
+      allow delete: if isDocOwner();
+    }
+
+    // Records Collection
+    match /records/{recordId} {
+      allow read: if isDocOwner();
+      allow create: if isAuthenticated() && 
+                      request.resource.data.userId == request.auth.uid &&
+                      isValidRecord(request.resource.data);
+      allow update: if isDocOwner() && 
+                      request.resource.data.userId == resource.data.userId &&
+                      isValidRecord(request.resource.data);
+      allow delete: if isDocOwner();
+    }
+
+    // Appointments Collection
+    match /appointments/{appointmentId} {
+      allow read: if isDocOwner();
+      allow create: if isAuthenticated() && 
+                      request.resource.data.userId == request.auth.uid &&
+                      isValidAppointment(request.resource.data);
+      allow update: if isDocOwner() && 
+                      request.resource.data.userId == resource.data.userId &&
+                      isValidAppointment(request.resource.data);
+      allow delete: if isDocOwner();
+    }
+
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

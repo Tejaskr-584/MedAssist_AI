@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  
+  /* Custom Colors */
+  --color-brand-primary: #6366f1;
+  --color-brand-secondary: #3b82f6;
+
+  /* Semantic Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+}
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --border: #e2e8f0;
+    --muted: #f1f5f9;
+    --muted-foreground: #475569;
+    --accent: #6366f1;
+    --accent-foreground: #ffffff;
+  }
+
+  .dark {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --card: #1e293b;
+    --card-foreground: #f8fafc;
+    --border: #334155;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --accent: #6366f1;
+    --accent-foreground: #f8fafc;
+  }
+
+  * {
+    @apply border-border transition-colors duration-300;
+  }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    @apply antialiased bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight font-black;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md border border-border shadow-xl;
+  }
+
+  .dark .glass-card {
+    @apply bg-card/40 backdrop-blur-lg border border-border/30 shadow-2xl;
+  }
+  
+  .medical-gradient {
+    @apply bg-gradient-to-br from-brand-primary to-brand-secondary;
+  }
+
+  .chat-bubble-user {
+    @apply bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-xl shadow-brand-primary/20;
+  }
+
+  .chat-bubble-bot {
+    @apply bg-card border border-border shadow-sm text-foreground;
+  }
+
+  .dark .chat-bubble-bot {
+    @apply bg-card/60 border border-border/50 text-foreground shadow-2xl;
+  }
+
+  .glass-sidebar {
+    @apply bg-card/70 backdrop-blur-xl border-r border-border;
+  }
+
+  .dark .glass-sidebar {
+    @apply bg-card/60 backdrop-blur-xl border-r border-border/50;
+  }
+}

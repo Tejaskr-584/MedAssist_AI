@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "Chat": {
+      "title": "Chat Session",
+      "description": "A symptom analysis chat session between a user and the AI.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The UID of the user who owns the chat." },
+        "title": { "type": "string", "description": "A short title for the chat session." },
+        "messages": { "type": "array", "description": "The list of messages in the chat." },
+        "lastAnalysis": { "type": "object", "description": "The most recent symptom analysis result." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the chat was created." }
+      },
+      "required": ["userId", "messages", "createdAt"]
+    },
+    "MedicalRecord": {
+      "title": "Medical Record",
+      "description": "A stored medical document or note for a user.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The UID of the user who owns the record." },
+        "title": { "type": "string", "description": "The title of the medical record." },
+        "content": { "type": "string", "description": "The text content of the record." },
+        "analysis": { "type": "string", "description": "The AI-generated summary of the record." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the record was added." }
+      },
+      "required": ["userId", "title", "content", "createdAt"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "A booked medical consultation with a doctor.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The UID of the user who booked the appointment." },
+        "doctorId": { "type": "string", "description": "The ID of the doctor." },
+        "doctorName": { "type": "string", "description": "The name of the doctor." },
+        "specialty": { "type": "string", "description": "The specialty of the doctor." },
+        "date": { "type": "string", "description": "The date of the appointment." },
+        "time": { "type": "string", "description": "The time slot of the appointment." },
+        "status": { "type": "string", "enum": ["confirmed", "cancelled", "completed"], "description": "The status of the appointment." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the appointment was booked." }
+      },
+      "required": ["userId", "doctorId", "doctorName", "date", "time", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "Collection of user chat sessions."
+    },
+    "/records/{recordId}": {
+      "schema": "MedicalRecord",
+      "description": "Collection of user medical records."
+    },
+    "/appointments/{appointmentId}": {
+      "schema": "Appointment",
+      "description": "Collection of user medical appointments."
+    }
+  }
+}

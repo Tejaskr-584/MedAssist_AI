@@ -1,0 +1,5 @@
+{
+  "name": "MedAssist AI",
+  "description": "AI-powered health assistant for symptom checking, medical record analysis, and doctor recommendations.",
+  "requestFramePermissions": ["geolocation"]
+}
