@@ -6,7 +6,7 @@
 
 ## 🏆 Hackathon Project
 
-This project is being developed for:
+This project is developed for:
 
 👉 **Build for Bengaluru Hackathon**
 
@@ -16,7 +16,7 @@ This project is being developed for:
 
 ## 🎯 Overview
 
-MedAssist AI helps users understand their symptoms, receive AI-generated insights, and take appropriate next steps — all through a simple chat interface.
+MedAssist AI enables users to describe their symptoms and receive AI-powered insights, helping them take informed next steps — all through a simple and interactive chat interface.
 
 ---
 
@@ -43,34 +43,34 @@ MedAssist AI:
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-* 💬 **Symptom Checker**
+* 💬 **AI Symptom Checker**
 
-  * Chat-based interaction
+  * Chat-based interface
   * Multi-turn conversation
   * Context-aware responses
 
-* 🤖 **AI-Powered Insights**
+* 🤖 **Gemini AI Integration**
 
-  * Uses Google Gemini for analysis
+  * Powered by Google Gemini
   * Natural language understanding
 
 * 📊 **Medical Context Awareness**
 
-  * Uses previous records for better accuracy
+  * Uses previous interactions for better analysis
 
 * 👨‍⚕️ **Doctor Recommendation**
 
-  * Suggests specialists based on symptoms
+  * Suggests relevant specialists based on symptoms
 
 * 📁 **Chat History & Storage**
 
-  * Stores user interactions in Firestore
+  * Stores conversations using Firebase Firestore
 
 * 📎 **File Upload Support**
 
-  * Upload medical reports/images
+  * Upload reports or medical documents
 
 * 🔐 **Authentication (Optional)**
 
@@ -89,23 +89,23 @@ MedAssist AI:
 
 ## 🤖 AI Approach
 
-* Uses **Google Gemini (LLM)** for intelligent symptom analysis
+* Uses **Google Gemini (LLM)** for symptom analysis
 * Natural Language Processing (NLP) for understanding user input
-* Multi-turn conversation handling
-* Context-based responses using chat history
-* Rule-based fallback system for reliability
-* Safety-focused responses (no direct diagnosis)
+* Multi-turn conversational flow
+* Context-based reasoning using chat history
+* Rule-based fallback for stability
+* Safety-first responses (no direct diagnosis)
 
 ---
 
 ## ⚙️ How It Works
 
 1. User enters symptoms in chat
-2. Chat history + medical context is sent to Gemini AI
-3. AI analyzes and generates insights
-4. Response is displayed in chat
-5. Data is stored in Firebase Firestore
-6. Relevant doctors are suggested
+2. AI processes input using Gemini
+3. Context (chat history + records) is considered
+4. AI generates insights and suggestions
+5. Data is stored in Firestore
+6. Relevant doctors are recommended
 
 ---
 
@@ -113,61 +113,16 @@ MedAssist AI:
 
 * Students and working professionals
 * People with limited access to healthcare
-* General users seeking quick medical guidance
+* General users seeking quick guidance
 
 ---
 
 ## 🌍 Impact
 
-* Promotes early detection of health issues
-* Reduces delay in medical intervention
-* Encourages preventive healthcare
+* Encourages early detection of health issues
+* Reduces delay in medical consultation
+* Promotes preventive healthcare
 * Improves accessibility to basic health guidance
-
----
-
-## 🚀 Getting Started
-
-### 1️⃣ Clone the Repository
-
-```bash
-git clone https://github.com/your-username/MedAssist_AI.git
-cd MedAssist_AI
-```
-
----
-
-### 2️⃣ Install Dependencies
-
-```bash
-npm install
-```
-
----
-
-### 3️⃣ Setup Environment Variables
-
-Create a `.env` file in the root directory:
-
-```bash
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
-```
-
----
-
-### 4️⃣ Run the Project
-
-```bash
-npm run dev
-```
-
----
-
-## ⚠️ Note
-
-* Authentication is currently bypassed for demo purposes
-* Core AI functionality works without login
-* Designed primarily for **hackathon demonstration**
 
 ---
 
@@ -190,13 +145,13 @@ npm run dev
 
 ---
 
-## 🔮 Future Improvements
+## 🔮 Future Scope
 
 * 🚨 Emergency detection system
-* 🧠 More accurate AI analysis
-* 📱 Mobile responsiveness
-* 🔐 Complete authentication flow
-* 🏥 Integration with real doctors / APIs
+* 🧠 Improved AI accuracy
+* 📱 Mobile optimization
+* 🔐 Full authentication system
+* 🏥 Integration with real healthcare providers
 
 ---
 
@@ -208,4 +163,4 @@ npm run dev
 
 ## ⭐ Support
 
-If you like this project, consider giving it a ⭐ on GitHub!
+If you like this project, consider giving it a ⭐
