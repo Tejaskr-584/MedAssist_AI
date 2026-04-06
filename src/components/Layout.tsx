@@ -181,7 +181,7 @@ export function Layout({ children }: LayoutProps) {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-xs font-black text-white bg-foreground hover:bg-rose-600 transition-all duration-300 shadow-lg"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-xs font-black text-white bg-red-500 hover:bg-red-600 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <LogOut size={16} />
                 {t('SIGN OUT', 'लॉग आउट')}

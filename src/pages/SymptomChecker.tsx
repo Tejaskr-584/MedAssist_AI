@@ -53,9 +53,16 @@ export function SymptomChecker() {
     }
   }, [messages, isLoading]);
 
-  const handleSend = async (customInput?: string) => {
+  const handleAnswer = async (value: string) => {
+    console.log("Button clicked:", value);
+    await handleSend(value, true);
+  };
+
+  const handleSend = async (customInput?: string, isFollowUpReply: boolean = false) => {
     const textToSend = customInput || input;
-    if (!textToSend.trim() || isLoading) return;
+    if (!textToSend.trim()) return;
+
+    console.log("Preparing to send message:", { textToSend, isFollowUpReply });
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -63,11 +70,15 @@ export function SymptomChecker() {
       content: textToSend,
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => {
+      const newState = [...prev, userMessage];
+      console.log("Updated state (messages):", newState);
+      return newState;
+    });
     setInput('');
 
     // Client-side validation
-    if (!isHealthQuery(textToSend)) {
+    if (!isFollowUpReply && !isHealthQuery(textToSend)) {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -467,7 +478,7 @@ export function SymptomChecker() {
                     {[t('Yes', 'हाँ'), t('No', 'नहीं'), t('Not sure', 'पक्का नहीं')].map(opt => (
                       <button 
                         key={opt}
-                        onClick={() => handleSend(`${msg.content} - ${opt}`)}
+                        onClick={() => handleAnswer(opt)}
                         className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-black uppercase tracking-widest transition-all"
                       >
                         {opt}
@@ -638,7 +649,7 @@ export function SymptomChecker() {
               </button>
               <button
                 onClick={() => handleSend()}
-                disabled={!input.trim() || isLoading}
+                disabled={!input.trim()}
                 className={cn(
                   "p-2.5 sm:p-3 lg:p-4 text-white rounded-lg sm:rounded-xl lg:rounded-2xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center shadow-lg active:scale-90",
                   isEmergency ? "bg-rose-600 shadow-rose-500/20" : "bg-gradient-to-r from-brand-primary to-brand-secondary shadow-brand-primary/20"

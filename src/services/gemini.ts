@@ -31,10 +31,24 @@ export function isHealthQuery(query: string): boolean {
     'vaccine', 'virus', 'infection', 'allergy', 'cold', 'flu', 'covid', 'heart', 'brain', 'skin',
     'bone', 'muscle', 'joint', 'eye', 'ear', 'nose', 'mouth', 'tooth', 'gum', 'hair', 'nail',
     'sleep', 'diet', 'exercise', 'mental', 'stress', 'anxiety', 'depression', 'therapy', 'counseling',
-    'what is', 'causes', 'how to treat', 'symptoms of'
+    'what is', 'causes', 'how to treat', 'symptoms of',
+    
+    // Added conversational and metric words
+    'temperature', 'degree', 'celsius', 'fahrenheit', 'bp', 'pressure', 'sugar', 'pulse', 'rate',
+    'feeling', 'since', 'days', 'weeks', 'hours', 'months', 'year', 'vomit', 'burn', 'itch', 'swell',
+    'weak', 'tired', 'fatigue', 'sweat', 'chill', 'breath', 'vision', 'hearing', 'taste', 'smell',
+    'yes', 'no', 'not sure', 'sure', 'maybe', 'okay', 'ok', 'alright',
+    'hi', 'hello', 'hey', 'start', 'help'
   ];
   
+  // If the query contains numbers (like "102"), assume it might be a medical reading
+  if (/\d/.test(query)) return true;
+
   const lowerQuery = query.toLowerCase();
+  
+  // Allow short conversational inputs to pass to the AI
+  if (lowerQuery.trim().split(' ').length <= 3) return true;
+
   return healthKeywords.some(keyword => lowerQuery.includes(keyword));
 }
 
@@ -55,6 +69,16 @@ export async function analyzeSymptoms(
     };
   }
 
+  const assistantMessageCount = chatHistory.filter(msg => msg.role === 'model').length;
+  const loopingPreventionRule = assistantMessageCount >= 1
+    ? "CRITICAL DECISION RULE: You have already asked follow-up questions. YOU MUST NOT ASK ANY MORE QUESTIONS. Force `followUpQuestions` to be an empty array []. Immediately provide the final possible conditions, severity level, actionable care steps, and when to see a doctor."
+    : `DECISION RULE:
+      - Ask at most 1 follow-up question only if absolutely necessary.
+      - After that, you MUST provide a complete medical response.
+      - DO NOT continue asking questions in loops.
+      - If enough information is available from the user's initial prompt, immediately give diagnosis-style guidance.
+      - Behave like ChatGPT, not a static form.`;
+
   const contents = chatHistory.map(msg => ({
     role: msg.role === 'user' ? 'user' : 'model',
     parts: [{ text: msg.content }]
@@ -64,14 +88,21 @@ export async function analyzeSymptoms(
     model: "gemini-3-flash-preview",
     contents,
     config: {
-      systemInstruction: `You are MedAssist AI, a strictly professional medical assistant. 
+      systemInstruction: `You are MedAssist AI, an intelligent, empathetic, and highly capable medical assistant behaving like a real doctor evaluating a patient.
       
       CONTEXT:
       - Current Language: ${options.language === 'hi' ? 'Hindi' : 'English'}
       - Emergency Mode: ${options.isEmergency ? 'ENABLED (Use a very urgent, strict, and direct tone)' : 'DISABLED'}
 
+      ${loopingPreventionRule}
+
+      CONVERSATIONAL INTELLIGENCE & CONTEXT RULES (CRITICAL):
+      - READ THE ENTIRE CHAT HISTORY. Never ask for information the patient has already provided.
+      - If the user provides a clear parameter or severe symptom (e.g., "102 degree fever", "severe chest pain"), DO NOT ask basic questions. Immediately skip to providing insights, identifying severity, outlining structured possible conditions, and giving actionable advice.
+      - Act like ChatGPT: fluid, intelligent, context-aware, and decisive.
+
       INTENT CLASSIFICATION RULES:
-      1. TYPE 1: SYMPTOM INPUT (e.g., "I have fever", "chest pain")
+      1. TYPE 1: SYMPTOM INPUT (e.g., "I have fever", "102 degree fever", "chest pain")
          - Set intent: "symptom_analysis"
          - Determine severity (Mild, Moderate, Severe) based on symptoms.
          - Provide structured medical analysis.
@@ -80,13 +111,12 @@ export async function analyzeSymptoms(
          - Provide a simple explanation, causes, when to worry, and basic care tips in "generalExplanation".
          - Do NOT use "Based on your symptoms" phrasing.
          - Leave structured fields (possibleConditions, etc.) empty or null.
-      3. TYPE 3: NON-MEDICAL QUESTIONS (e.g., "2+2", "Who is the PM?")
+      3. TYPE 3: NON-MEDICAL QUESTIONS (e.g., "tell me a joke", "2+2", "Who is the PM?")
          - Set intent: "non_medical"
          - Set isHealthRelated: false
          - Return EXACTLY: "This is MedAssist AI, a medical assistant. Please ask health-related questions only." in "emergencyWarning".
 
       GENERAL RULES:
-      - If the user's symptom input is vague or severity is unclear, provide 1-2 natural follow-up questions in "followUpQuestions" (e.g., "How intense is the pain?", "Is it getting worse?").
       - ALWAYS respond in the requested language: ${options.language === 'hi' ? 'Hindi' : 'English'}.
       - ALWAYS return a JSON object with the following structure:
       {
@@ -97,8 +127,8 @@ export async function analyzeSymptoms(
         "emergencyWarning": "Warning message or refusal message, else null",
         "recommendedDoctor": "Specialist type",
         "isHealthRelated": boolean,
-        "followUpQuestions": ["question1", "question2"],
-        "generalExplanation": "Markdown explanation for general medical queries"
+        "followUpQuestions": ["question1"], // Max 1-2 items only!
+        "generalExplanation": "Markdown explanation"
       }
       - Be cautious, professional, and always include a disclaimer that this is not a substitute for professional medical advice.`,
       responseMimeType: "application/json",
