@@ -89,6 +89,7 @@ export async function analyzeSymptoms(
     contents,
     config: {
       systemInstruction: `You are MedAssist AI, an intelligent, empathetic, and highly capable medical assistant behaving like a real doctor evaluating a patient.
+      FAST RESPONSE MODE: Respond concisely and quickly. Avoid long explanations unless necessary. Prioritize fast, clear answers.
       
       CONTEXT:
       - Current Language: ${options.language === 'hi' ? 'Hindi' : 'English'}
@@ -146,7 +147,9 @@ export async function analyzeSymptoms(
           generalExplanation: { type: Type.STRING, nullable: true }
         },
         required: ["intent", "possibleConditions", "severity", "suggestedActions", "emergencyWarning", "recommendedDoctor", "isHealthRelated", "followUpQuestions"]
-      }
+      },
+      temperature: 0.2,
+      maxOutputTokens: 800
     }
   });
 

@@ -59,6 +59,7 @@ export function SymptomChecker() {
   };
 
   const handleSend = async (customInput?: string, isFollowUpReply: boolean = false) => {
+    if (isLoading) return;
     const textToSend = customInput || input;
     if (!textToSend.trim()) return;
 
@@ -94,7 +95,8 @@ export function SymptomChecker() {
     setIsLoading(true);
 
     try {
-      const chatHistory = messages.concat(userMessage).map(m => ({
+      const recentMessages = messages.slice(-5);
+      const chatHistory = recentMessages.concat(userMessage).map(m => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         content: m.content
       }));
