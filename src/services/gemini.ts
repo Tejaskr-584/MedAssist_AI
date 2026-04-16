@@ -84,10 +84,12 @@ export async function analyzeSymptoms(
     parts: [{ text: msg.content }]
   }));
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents,
-    config: {
+  let response;
+  try {
+    response = await ai.models.generateContent({
+      model: "gemini-3.1-pro",
+      contents,
+      config: {
       systemInstruction: `You are MedAssist AI, an intelligent, empathetic, and highly capable medical assistant behaving like a real doctor evaluating a patient.
       FAST RESPONSE MODE: Respond concisely and quickly. Avoid long explanations unless necessary. Prioritize fast, clear answers.
       
@@ -152,6 +154,10 @@ export async function analyzeSymptoms(
       maxOutputTokens: 800
     }
   });
+  } catch (error) {
+    console.error("Gemini API call failed:", error);
+    throw new Error("I apologize, but I encountered an error while communicating with the analysis service. Please check your API key and connection.");
+  }
 
   try {
     const analysis: SymptomAnalysis = JSON.parse(response.text || "{}");
@@ -173,15 +179,21 @@ export async function analyzeMedicalRecord(recordContent: string): Promise<strin
     return "API key not configured. Please check your .env file and refresh the page.";
   }
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: `Analyze the following medical record and provide a clear, concise summary for the patient. 
-    Explain key terms and highlight any areas that might need follow-up with a doctor.
-    Record: ${recordContent}`,
-    config: {
-      systemInstruction: "You are a medical record analyst. Provide clear, patient-friendly summaries of complex medical documents."
-    }
-  });
+  let response;
+  try {
+    response = await ai.models.generateContent({
+      model: "gemini-3.1-pro",
+      contents: `Analyze the following medical record and provide a clear, concise summary for the patient. 
+      Explain key terms and highlight any areas that might need follow-up with a doctor.
+      Record: ${recordContent}`,
+      config: {
+        systemInstruction: "You are a medical record analyst. Provide clear, patient-friendly summaries of complex medical documents."
+      }
+    });
+  } catch (error) {
+    console.error("Gemini API call failed for medical record:", error);
+    return "Failed to analyze the record due to an API error. Please try again.";
+  }
 
   return response.text || "Could not analyze the record.";
 }
