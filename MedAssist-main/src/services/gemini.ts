@@ -158,7 +158,7 @@ export async function chatAboutRecord(record: string, question: string) {
   }
 }
 
-// ================= GROQ FALLBACK =================
+ // ================= GROQ FALLBACK =================
 async function callGroq(messages: any[], systemInstruction: string) {
   const apiKey = import.meta.env.VITE_GROQ_API_KEY;
   if (!apiKey) return null;
